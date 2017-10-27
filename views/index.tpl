@@ -7,7 +7,7 @@
         <input type="search" name="post_search" placeholder="Search...">
       </p>
       <p>
-        <button type="submit" class="submit_button">
+        <button type="submit" class="submit-button">
           <img src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-md.png" alt="Search Icon">
         </button>
       </p>
