@@ -63,6 +63,11 @@ def do_register():
             errors.append('Username already registered')
     return template('login', errors=errors, form=form, user=None)
 
+@error(404)
+def error404(error):
+    user = get_session(db)
+    return template('404', user=user)
+
 if __name__ == '__main__':
     db = database()
     create_tables(db)
