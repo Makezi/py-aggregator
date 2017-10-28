@@ -6,24 +6,85 @@ COOKIE = "sessionid"
 avatar_site = "http://api.adorable.io/avatars/16/"
 
 def create_tables(db):
-  query = """
-  DROP TABLE IF EXISTS users;
-  CREATE TABLE users (
-      username TEXT UNIQUE PRIMARY KEY COLLATE NOCASE,
-      password TEXT NOT NULL,
-      avatar TEXT
-  );
+    query = """
+    DROP TABLE IF EXISTS users;
+    CREATE TABLE users (
+        username TEXT UNIQUE PRIMARY KEY COLLATE NOCASE,
+        password TEXT NOT NULL,
+        avatar TEXT
+    );
 
-  DROP TABLE IF EXISTS sessions;
-  CREATE TABLE sessions (
-      sessionid TEXT UNIQUE PRIMARY KEY,
-      username TEXT NOT NULL,
-      FOREIGN KEY (username) REFERENCES users(username)
-  );
-  """
-  cursor = db.cursor()
-  cursor.executescript(query)
-  db.commit()
+    DROP TABLE IF EXISTS sessions;
+    CREATE TABLE sessions (
+        sessionid TEXT UNIQUE PRIMARY KEY,
+        username TEXT NOT NULL,
+        FOREIGN KEY (username) REFERENCES users(username)
+    );
+
+    DROP TABLE IF EXISTS posts;
+    CREATE TABLE posts (
+        id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        url TEXT,
+        image TEXT,
+        content TEXT,
+        username TEXT NOT NULL,
+        timestamp TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        FOREIGN KEY (username) REFERENCES users(username)
+    );
+
+    DROP TABLE IF EXISTS comments;
+    CREATE TABLE comments (
+        id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
+        content TEXT NOT NULL,
+        username TEXT NOT NULL,
+        post_id INTEGER NOT NULL,
+        parent_id INTEGER,
+        timestamp TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        FOREIGN KEY (username) REFERENCES users(username),
+        FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
+    );
+
+    DROP TABLE IF EXISTS post_votes;
+    CREATE TABLE post_votes (
+        post_id INTEGER,
+        username TEXT NOT NULL,
+        up INTEGER DEFAULT 0,
+        down INTEGER DEFAULT 0,
+        PRIMARY KEY (post_id, username),
+        FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+        FOREIGN KEY (username) REFERENCES users(username)
+    );
+
+    DROP TABLE IF EXISTS comment_votes;
+    CREATE TABLE comment_votes (
+        comment_id INTEGER,
+        username TEXT NOT NULL,
+        up INTEGER DEFAULT 0,
+        down INTEGER DEFAULT 0,
+        PRIMARY KEY (comment_id, username),
+        FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE,
+        FOREIGN KEY (username) REFERENCES users(username)
+    );
+
+    DROP TABLE IF EXISTS keywords;
+    CREATE TABLE keywords (
+        id INTEGER PRIMARY KEY,
+        keyword TEXT NOT NULL UNIQUE
+    );
+
+    DROP TABLE IF EXISTS post_keywords;
+    CREATE TABLE post_keywords (
+        post_id INTEGER NOT NULL,
+        keyword_id INTEGER NOT NULL,
+        PRIMARY KEY (post_id, keyword_id),
+        FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+        FOREIGN KEY (keyword_id) REFERENCES keywords(id)
+    );
+    """
+    cursor = db.cursor()
+    cursor.executescript(query)
+    db.commit()
 
 # User table methods
 
