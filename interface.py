@@ -157,8 +157,10 @@ def delete_session(db, username):
     response.set_cookie(COOKIE, session_id, expires=0)
 
 def get_session(db):
-    """"Attempt to retrieve user if an active session exists. Return None if
-    there is no valid session"""
+    """
+    Attempt to retrieve user if an active session exists. Return None if
+    there is no valid session
+    """
     session_id = request.get_cookie(COOKIE)
     cursor = db.cursor()
     query = "SELECT username FROM sessions WHERE sessionid = ?"
@@ -167,3 +169,105 @@ def get_session(db):
     if user:
         return user[0]
     return None
+
+# Sample data
+
+def insert_sample_data(db):
+    """ 
+    Generate sample data for testing the application 
+    """
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM users")
+    cursor.execute("DELETE FROM posts")
+    # Create users
+    users = [('Jim', 'jim123', avatar_site + 'Jim'),
+             ('Bruce', 'bruce123', avatar_site + 'Bruce'),
+             ('Wally', 'wally123', avatar_site + 'Wally')]
+    for username, password, avatar in users:
+        query = "INSERT INTO users (username, password, avatar) VALUES (?, ?, ?)"
+        cursor.execute(query, (username, db.crypt(password), avatar))
+
+    # Create posts
+    posts = [("City Light at Night",
+              None,
+              "skyline.jpg",
+              None,
+              'Bruce',
+              '2015-01-15 01:45:06'),
+             ('KUNG FURY',
+              'https://www.youtube.com/watch?v=bS5P_LAqiVg',
+              None,
+              '10/10',
+              'Wally',
+              '2015-04-21 00:54:53'),
+             ("What is the thin buzzing sound that I hear when it's really quiet?",
+
+              None,
+              None,
+              None,
+              'Jim',
+              '2015-05-3 22:24:14')]
+    for title, url, image, content, username, timestamp in posts:
+        query = "INSERT INTO posts (title, url, image, content, username, timestamp) VALUES (?, ?, ?, ?, ?, ?)"
+        cursor.execute(query, (title, url, image, content, username, timestamp))
+    # Create comments
+    comments = [("I've been waiting for this moment ever since the Kickstarter came up!",
+                 'Bruce',
+                 2,
+                 None,
+                 '2015-04-21 00:55:27'),
+                ('Pretty good',
+                 'Jim',
+                 2,
+                 None,
+                 '2015-04-21 00:57:12'),
+                ('Yep, 10/10',
+                 'Wally',
+                 2,
+                 1,
+                 '2015-04-21 00:58:05'),
+                ('Agreed.',
+                 'Bruce',
+                 2,
+                 3,
+                 '2015-04-21 00:59:05'),
+                ("Very pretty!",
+                 'Jim',
+                 1,
+                 None,
+                 '2015-01-15 01:59:06'),
+                ("I believe it is called 'Urban Static'. You will notice it goes away during heavy snow storms since "
+                 "the snow starts adsorbing distant sounds.",
+                 "Bruce",
+                 3,
+                 None,
+                 "2015-05-3 22:26:24"),
+                ("I love when it snows a lot because of how quiet the world becomes, it goes away for me during "
+                 "heavy snow.",
+                 "Wally",
+                 3,
+                 6,
+                 "2015-05-3 22:27:34")]
+    for content, username, post_id, parent_id, timestamp in comments:
+        query = "INSERT INTO comments (content, username, post_id, parent_id, timestamp) VALUES (?, ?, ?, ?, ?)"
+        cursor.execute(query, (content, username, post_id, parent_id, timestamp))
+    # Create post votes
+    post_votes = [(3, 'Jim', 0, 1), (2, 'Bruce', 1, 0), (2, 'Wally', 1, 0)]
+    for post_id, username, up, down in post_votes:
+        query = "INSERT INTO post_votes (post_id, username, up, down) VALUES (?, ?, ?, ?)"
+        cursor.execute(query, (post_id, username, up, down))
+
+    # Create comment votes
+    comment_votes = [(1, 'Jim', 1, 0), (1, 'Bruce', 1, 0)]
+    for comment_id, username, up, down in comment_votes:
+        query = "INSERT INTO comment_votes (comment_id, username, up, down) VALUES (?, ?, ?, ?)"
+        cursor.execute(query, (post_id, username, up, down))
+    # Create post keywords
+    keywords = [(1, 'science'), (2, 'funny'), (3, 'news'), (4, 'serious'), (5, 'relaxing')]
+    for id, keyword in keywords:
+        query = "INSERT INTO keywords (id, keyword) VALUES (?, ?)"
+        cursor.execute(query, (id, keyword))
+    post_keywords = [(1, 5), (2, 2), (2, 3), (3, 3)]
+    for post_id, keyword_id in post_keywords:
+        query = "INSERT INTO post_keywords (post_id, keyword_id) VALUES (?, ?)"
+        cursor.execute(query, (post_id, keyword_id))

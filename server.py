@@ -10,13 +10,24 @@ BaseTemplate.defaults['request'] = request
 @get('/')
 def index():
     user = get_session(db)
-    return template('index', posts=posts, user=user)
+    return template('index', user=user)
 
 @get('/login')
 def login():
     if get_session(db):
         redirect('/')
     return template('login', errors=None, form=None, user=None)
+
+def login_required(func):
+    """ 
+    Decorator which checks if the user is logged in before 
+    accessing restricted routes 
+    """
+    def wrap(*args, **kwargs):
+        if get_session(db):
+            return func(*args, **kwargs)
+        redirect('/login')
+    return wrap
 
 @get('/logout')
 def logout():
@@ -71,4 +82,7 @@ def error404(error):
 if __name__ == '__main__':
     db = database()
     create_tables(db)
+
+    # Testing purposes
+    insert_sample_data(db)
     run(debug=True, host="localhost", post=3000)

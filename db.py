@@ -4,7 +4,9 @@ import hashlib
 class database():
 
   def __init__(self, dbname="database.db"):
-    "Database constructor. Default database name is 'database.db'"
+    """ 
+    Database constructor. Default database name is 'database.db'
+    """
     self.dbname = dbname
     self.conn = sqlite3.connect(self.dbname)
 
@@ -12,14 +14,20 @@ class database():
     self.conn.text_factory = str
 
   def cursor(self):
-    "Return a cursor on the database"
+    """
+    Return a cursor on the database
+    """
     return self.conn.cursor()
 
   def commit(self):
-    "Commit pending changes"
+    """
+    Commit pending changes
+    """
     self.conn.commit()
 
   def crypt(self, password):
-    "Return hashed password"
+    """
+    Return hashed password
+    """
     return hashlib.sha1(password.encode()).hexdigest()
   
