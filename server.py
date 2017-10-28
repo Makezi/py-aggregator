@@ -18,6 +18,15 @@ def login():
         redirect('/')
     return template('login', errors=None, form=None, user=None)
 
+@get('/logout')
+def logout():
+    user = get_session(db)
+    if user:
+        delete_session(db, user)
+        redirect('/')
+    else:
+        redirect('/login')
+
 @post('/login')
 def do_login():
     username = request.forms.get('username')
