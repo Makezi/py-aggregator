@@ -1,6 +1,7 @@
 from bottle import request, response
 import sqlite3
 import uuid
+from util import format_date
 
 COOKIE = "sessionid"
 avatar_site = "http://api.adorable.io/avatars/16/"
@@ -113,6 +114,53 @@ def check_login(db, username, password):
     if not user:
         return False
     return True
+
+# Post table methods
+
+def get_all_posts(db, user, keyword=''):
+    """
+    Return a list of posts, including user avatars, comment count,
+    post votes and keywords, ordered by votes.
+    Can return list of posts that can contain keyword
+    """
+    cursor = db.cursor()
+    query = """
+    SELECT p.*, u.avatar,
+        (SELECT COUNT(*)
+          FROM comments
+          WHERE post_id = p.id),
+        (SELECT COALESCE(SUM(up) - SUM(down), 0)
+          FROM post_votes
+          WHERE post_id = p.id) v,
+        (SELECT SUM(up + -down)
+          FROM post_votes
+          WHERE post_id = p.id
+          AND username = ?),
+        GROUP_CONCAT(k.keyword)
+    FROM users u
+    LEFT OUTER JOIN posts p ON u.username = p.username
+    LEFT OUTER JOIN  post_keywords pk ON p.id = pk.post_id
+    LEFT OUTER JOIN keywords k ON pk.keyword_id = k.id
+    WHERE p.id is not NULL
+    GROUP BY p.id
+    HAVING (p.title LIKE ? OR p.username LIKE ? OR GROUP_CONCAT(k.keyword) LIKE ?)
+    ORDER BY v DESC
+    """
+    keyword = '%' + str(keyword) + '%'
+    cursor.execute(query, (user, keyword, keyword, keyword))
+    result = []
+    for row in cursor:
+        row = list(row)
+        # Form date and time
+        row[6] = format_date(row[6])
+        # If vote count is None, set it as 0
+        if row[9] is None:
+            row[9] = 0
+        # Split keywords into a list to be returned
+        if row[11] is not None:
+            row[11] = [x.strip() for x in row[11].split(',')]
+        result.append(row)
+    return result
 
 ## Session table methods
 

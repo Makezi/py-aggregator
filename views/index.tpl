@@ -24,4 +24,18 @@
     </a>
     %end
   </div>
+
+  <div class="posts-container">
+    %if posts:
+    <table>
+      %for post in posts:
+      <tbody>
+        <tr class="post" route="/post/{{post[0]}}">
+          %include('post_element.tpl', post=post)
+        </tr>
+      </tbody>
+      %end
+    </table>
+    %end
+  </div>
 </div>

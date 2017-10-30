@@ -10,7 +10,8 @@ BaseTemplate.defaults['request'] = request
 @get('/')
 def index():
     user = get_session(db)
-    return template('index', user=user)
+    posts = get_all_posts(db, user)
+    return template('index', posts=posts, user=user)
 
 @get('/login')
 def login():
