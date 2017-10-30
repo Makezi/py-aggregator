@@ -75,6 +75,15 @@ def do_register():
             errors.append('Username already registered')
     return template('login', errors=errors, form=form, user=None)
 
+@get('/post/<post_id:int>')
+def view_post(post_id):
+    user = get_session(db)
+    post = get_post(db, post_id, user)
+    comments = get_post_comments(db, post_id, user)
+    if not post:
+        redirect('/404')
+    return template('post', post=post, comments=comments, user=user)
+
 @error(404)
 def error404(error):
     user = get_session(db)

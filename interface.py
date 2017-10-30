@@ -162,6 +162,78 @@ def get_all_posts(db, user, keyword=''):
         result.append(row)
     return result
 
+def get_post(db, post_id, user):
+    """
+    Returns specific post by id if it exists, otherwise None
+    """
+    cursor = db.cursor()
+    query = """
+    SELECT p.*, u.avatar,
+      (SELECT COALESCE(SUM(up) - SUM(down), 0)
+        FROM post_votes
+        WHERE post_id = p.id),
+      (SELECT SUM(up + -down)
+        FROM post_votes
+        WHERE post_id = p.id
+        AND username = ?),
+      GROUP_CONCAT(k.keyword)
+    FROM users u
+    LEFT OUTER JOIN posts p ON u.username = p.username
+    LEFT OUTER JOIN  post_keywords pk ON p.id = pk.post_id
+    LEFT OUTER JOIN keywords k ON pk.keyword_id = k.id
+    WHERE p.id = ?
+    GROUP BY p.id
+    """
+    cursor.execute(query, (user, post_id))
+    post = cursor.fetchone()
+    if post:
+        post = list(post)
+        # Format date and time
+        post[6] = format_date(post[6])
+        # Split keywords into a list to be returned
+        if post[10] is not None:
+            post[10] = [x.strip() for x in post[10].split(',')]
+        return post
+    return None
+
+# Comments table methods
+
+def get_post_comments(db, post_id, user):
+    """
+    Returns list of all comments for specific post id, including user avatars and
+    comment votes for the related comment.
+    A vote count is also returned which determines if the logged in user has voted on
+    a specific comment (1 being upvote, -1 being downvote, 0 for unvoted)
+    """
+    cursor = db.cursor()
+    query = """
+    SELECT c.*, u.avatar,
+      (SELECT COALESCE(SUM(up) - SUM(down), 0)
+        FROM comment_votes
+        WHERE comment_id = c.id) v,
+      (SELECT SUM(up + -down)
+        FROM comment_votes
+        WHERE comment_id = c.id
+        AND username = ?)
+    FROM users u
+    LEFT OUTER JOIN comments c
+    ON u.username = c.username
+    WHERE c.post_id = ?
+    AND c.id is not NULL
+    ORDER BY v DESC
+    """
+    cursor.execute(query, (user, post_id))
+    result = []
+    for row in cursor:
+        row = list(row)
+        # Format date and time
+        row[5] = format_date(row[5])
+        # If vote count is None, set it to 0
+        if row[7] is None:
+            row[7] = 0
+        result.append(row)
+    return result
+
 ## Session table methods
 
 def new_session(db, username):
