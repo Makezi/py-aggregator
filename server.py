@@ -80,6 +80,17 @@ def error404(error):
     user = get_session(db)
     return template('404', user=user)
 
+@route('/static/<filename>')
+def server_static(filename):
+    """
+    For CSS
+    """
+    return static_file(filename, root='static/')
+
+@route('/static/img/<filename>')
+def server_image(filename):
+    return static_file(filename, root='static/img/')
+
 if __name__ == '__main__':
     db = database()
     create_tables(db)
