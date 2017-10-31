@@ -88,6 +88,29 @@ class RegisterForm(BaseForm):
             self._errors.append('Password field and verify password field do not match')
         return self._errors
 
+class PostForm(BaseForm):
+
+    def __init__(self, title, url, content):
+        BaseForm.__init__(self)
+        self._title = title
+        self._url = url
+        self._content = content
+        self._form_name = "Post"
+
+    def validate(self):
+        title_min = 1
+        title_max = 255
+        content_max = 1000
+        if not self._title:
+            self._errors.append('Title field is required')
+        if not between_length(self._title, title_min, title_max):
+            self._errors.append('Title must be between %s and %s characters long' % (title_min, title_max))
+        if not between_length(self._content, 0, content_max):
+            self._errors.append('Content has exceeded maximum characters of %s' % (content_max))
+        if self._url and not valid_url(self._url):
+            self._errors.append('Invalid URL')
+        return self._errors
+
 def acceptable_chars(data, regex):
     """
     Validates the data against a provided regular expression
@@ -101,3 +124,11 @@ def between_length(data, min_length, max_length):
     Validates the data against the provided minimum and maximum length allowed
     """
     return min_length <= len(data) <= max_length
+
+def valid_url(data):
+    """
+    Validates the data against valid URL strings
+    """
+    if re.match('(?:https?://|www.)[^"\' ]+', data):
+        return True
+    return False

@@ -2,6 +2,8 @@ from bottle import request, response
 import sqlite3
 import uuid
 from util import format_date
+from datetime import datetime
+from html_sanitizer import Sanitizer
 
 COOKIE = "sessionid"
 avatar_site = "http://api.adorable.io/avatars/16/"
@@ -116,6 +118,26 @@ def check_login(db, username, password):
     return True
 
 # Post table methods
+
+def sanitize_html(content):
+    """
+    Converts content to safe HTML
+    """
+    sanitizer = Sanitizer()
+    content = sanitizer.sanitize(content)
+    return content
+
+def new_post(db, title, url, content, username):
+    """
+    Adds a new post to the database.
+    Date of the post will be the current date and time.
+    Returns newly inserted row id
+    """
+    cursor = db.cursor()
+    query = "INSERT INTO posts (title, url, content, username, timestamp) VALUES (?, ?, ?, ?, ?)"
+    cursor.execute(query, (title, url, content, username, datetime.now()))
+    db.commit()
+    return cursor.lastrowid
 
 def get_all_posts(db, user, keyword=''):
     """
@@ -289,6 +311,43 @@ def get_session(db):
     if user:
         return user[0]
     return None
+
+# Keyword table methods
+
+def new_keyword(db, keyword):
+    """
+    Inserts unique keyword into database
+    """
+    try:
+        cursor = db.cursor()
+        query = "INSERT INTO keywords (keyword) VALUES (?)"
+        cursor.execute(query, (keyword,))
+        db.commit()
+        return cursor.lastrowid
+    except sqlite3.IntegrityError:
+        return False
+
+def add_keyword_to_post(db, post_id, keyword):
+    """
+    Links keyword stored in database to a post.
+    If keyword doesn't exist, it is first created.
+    Can not have duplicates keywords linked to a single post.
+    """
+    cursor = db.cursor()
+    query = "SELECT id FROM keywords WHERE keyword = ?"
+    cursor.execute(query, (keyword,))
+    row = cursor.fetchone()
+    if row is None:
+        keyword_id = new_keyword(db, keyword)
+    else:
+        keyword_id = row[0]
+    try:
+        query = "INSERT INTO post_keywords (post_id, keyword_id) VALUES (?, ?)"
+        cursor.execute(query, (post_id, keyword_id))
+        db.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
 
 # Sample data
 

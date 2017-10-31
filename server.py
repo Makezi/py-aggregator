@@ -75,6 +75,33 @@ def do_register():
             errors.append('Username already registered')
     return template('login', errors=errors, form=form, user=None)
 
+@get('/submit_post')
+@login_required
+def submit_post():
+    user = get_session(db)
+    return template('submit_post', errors=None, form=None, user=user)
+
+
+@post('/submit_post')
+@login_required
+def do_submit_post():
+    user = get_session(db)
+    title = request.forms.get('title')
+    url = request.forms.get('url')
+    content = sanitize_html(request.forms.get('content'))
+    post_form = PostForm(title, url, content)
+    form = post_form.get_form_name()
+    errors = post_form.validate()
+    if not errors:
+        post_id = new_post(db, title, url, content, user)
+        # get keywords, insert into tables
+        keywords = format_keywords(request.forms.get('keywords'))
+        # Add keywords to table
+        for keyword in keywords:
+            add_keyword_to_post(db, post_id, keyword)
+        redirect('/post/' + str(post_id))
+    return template('submit_post', errors=errors, form=form, user=user)
+
 @get('/post/<post_id:int>')
 def view_post(post_id):
     user = get_session(db)
@@ -99,6 +126,27 @@ def server_static(filename):
 @route('/static/img/<filename>')
 def server_image(filename):
     return static_file(filename, root='static/img/')
+
+def format_keywords(keywords):
+    """
+    Accepts keyword list, separates them by comma, removes duplicates, empty and
+    keywords exceeding character limit of 15, as well as sanitizes removes keywords
+    above the maximum limit of 5 for a post
+    """
+    # Separate keywords by comma
+    new_keywords = [x.strip() for x in keywords.split(',')]
+    # Remove duplicates and strings longer than 15 as well preserving order
+    exists = set()
+    exists_add = exists.add
+    new_keywords = [x for x in new_keywords if not (x in exists or exists_add(x)) and len(x) <= 15]
+    # Remove empty strings
+    new_keywords = list(filter(None, new_keywords))
+    # Sanitize
+    for x in range(len(new_keywords)):
+        new_keywords[x] = re.sub('[^a-zA-Z0-9\+\-\.\#]', '', new_keywords[x])
+    # Remove overflowing keywords (maximum 5)
+    new_keywords = list(itertools.islice(new_keywords, 5))
+    return new_keywords
 
 if __name__ == '__main__':
     db = database()
