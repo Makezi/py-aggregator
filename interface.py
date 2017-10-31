@@ -220,6 +220,16 @@ def get_post(db, post_id, user):
 
 # Comments table methods
 
+def new_comment(db, content, username, post_id, parent_id=None):
+    """
+    Adds a new comment to a post.
+    Date of the comment will be the current date and time.
+    """
+    cursor = db.cursor()
+    query = "INSERT INTO comments (content, username, post_id, parent_id, timestamp) VALUES (?, ?, ?, ?, ?)"
+    cursor.execute(query, (content, username, post_id, parent_id, datetime.now()))
+    db.commit()
+
 def get_post_comments(db, post_id, user):
     """
     Returns list of all comments for specific post id, including user avatars and

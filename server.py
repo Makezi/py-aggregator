@@ -111,6 +111,18 @@ def view_post(post_id):
         redirect('/404')
     return template('post', post=post, comments=comments, user=user)
 
+@post('/post/<post_id:int>/submit_comment')
+@login_required
+def do_submit_comment(post_id):
+    user = get_session(db)
+    content = request.forms.get('comment')
+    # Sanitize
+    content = sanitize_html(content)
+    parent_id = request.forms.get('parent')
+    if content:
+        new_comment(db, content, user, post_id, parent_id)
+    redirect('/post/' + str(post_id))
+
 @error(404)
 def error404(error):
     user = get_session(db)
