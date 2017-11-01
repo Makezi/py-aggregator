@@ -1,12 +1,12 @@
 %rebase('base.tpl')
-<div class="form-errors">
+<div class="form_errors">
   %if errors: 
     %for error in errors:
     <p><strong>{{form}}:</strong> {{error}}</p>
     %end 
   %end
 </div>
-<div class="login-container">
+<div class="login_container">
   <div class="register">
     <form action="/register" method="POST">
       <legend>Register</legend>
@@ -20,7 +20,7 @@
         <input type="password" name="verify_password" placeholder="Verify Password" required>
       </p>
       <p>
-        <button type="submit" class="submit-button">Register</button>
+        <button type="submit" class="submit_button">Register</button>
       </p>
     </form>
   </div>
@@ -34,7 +34,7 @@
         <input type="password" name="password" placeholder="Password" required>
       </p>
       <p>
-        <button type="submit" class="submit-button">Login</button>
+        <button type="submit" class="submit_button">Login</button>
       </p>
     </form>
   </div>

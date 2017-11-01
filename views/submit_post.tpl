@@ -1,5 +1,5 @@
 %rebase('base.tpl')
-<div class="form-errors">
+<div class="form_errors">
   %if errors:
     %for error in errors:
       <p><strong>{{form}}:</strong> {{error}}</p>
@@ -7,17 +7,17 @@
   %end
 </div>
 
-<div class="submit-post">
+<div class="submit_post">
   <form action="/submit_post" method="POST">
     <legend>Submit Post</legend>
       <p>Title</p>
-      <p><textarea class="submit-title-box" name="title" required></textarea></p>
+      <p><textarea class="submit_title_box" name="title" required></textarea></p>
       <p>URL</p>
       <p><input type="text" name="url" placeholder="http://"></p>
       <p>Content</p>
-      <p><textarea class="submit-content-box" name="content"></textarea></p>
+      <p><textarea class="submit_content_box" name="content"></textarea></p>
       <p>Keywords</p>
-      <div class="keyword-rules">
+      <div class="keyword_rules">
         <p>A keyword can be used to categorize your post with other similar posts</p>
         <ul>
           <li>Maximum  of 5 keywords</li>
@@ -27,9 +27,9 @@
           <li>Delimit keywords with comma</li>
         </ul>
       </div>
-      <p class="keywords-entered" style="margin-bottom: 20px;"></p>
+      <p class="keywords_entered" style="margin-bottom: 20px;"></p>
       <input type="text" name="keywords" id="keywords">
-      <p><button type="submit" class="submit-button">Submit</button></p>
+      <p><button type="submit" class="submit_button">Submit</button></p>
   </form>
 </div>
 

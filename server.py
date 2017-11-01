@@ -111,6 +111,37 @@ def view_post(post_id):
         redirect('/404')
     return template('post', post=post, comments=comments, user=user)
 
+@get('/post/<post_id:int>/vote_up')
+@login_required
+def vote_post_up(post_id):
+    do_vote_post_up(post_id)
+    redirect('/post/' + str(post_id))
+
+
+@get('/post/<post_id:int>/vote_down')
+@login_required
+def vote_post_down(post_id):
+    do_vote_post_down(post_id)
+    redirect('/post/' + str(post_id))
+
+
+@post('/post/<post_id:int>/vote_up')
+@login_required
+def do_vote_post_up(post_id):
+    user = get_session(db)
+    vote_post(db, post_id, user, 1, 0)
+    total_votes = get_post_votes(db, post_id)
+    return str(total_votes)
+
+
+@post('/post/<post_id:int>/vote_down')
+@login_required
+def do_vote_post_down(post_id):
+    user = get_session(db)
+    vote_post(db, post_id, user, 0, 1)
+    total_votes = get_post_votes(db, post_id)
+    return str(total_votes)
+
 @post('/post/<post_id:int>/submit_comment')
 @login_required
 def do_submit_comment(post_id):

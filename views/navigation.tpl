@@ -1,11 +1,11 @@
 <nav class="nav">
   <div class="wrap">
-    <div class="nav-header">
+    <div class="nav_header">
       <h1>
         <a href="/">{{title}}</a>
       </h1>
     </div>
-    <div class="nav-login">
+    <div class="nav_login">
       %if user:
       <ul>
         <li>Welcome {{user}}</li>

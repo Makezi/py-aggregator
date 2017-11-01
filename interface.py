@@ -322,6 +322,35 @@ def get_session(db):
         return user[0]
     return None
 
+# Votes table methods
+
+def vote_post(db, post_id, username, up, down):
+    """
+    Allows user to vote on a post.
+    Users can only vote once on a post
+    """
+    try:
+        cursor = db.cursor()
+        query = "INSERT INTO post_votes (post_id, username, up, down) VALUES (?, ?, ?, ?)"
+        cursor.execute(query, (post_id, username, up, down))
+        db.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+
+def get_post_votes(db, post_id):
+    """
+    Returns sum of votes for specific post
+    """
+    cursor = db.cursor()
+    query = "SELECT SUM(up) - SUM(down) FROM post_votes WHERE post_id = ?"
+    cursor.execute(query, (post_id,))
+    row = cursor.fetchone()
+    # If post has no votes, return 0
+    if row is None:
+        return 0
+    return row[0]
+
 # Keyword table methods
 
 def new_keyword(db, keyword):
