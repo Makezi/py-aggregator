@@ -351,6 +351,34 @@ def get_post_votes(db, post_id):
         return 0
     return row[0]
 
+def vote_comment(db, comment_id, username, up, down):
+    """
+    Allows user to vote on a comment.
+    Users can only vote once on a comment
+    """
+    try:
+        cursor = db.cursor()
+        query = "INSERT INTO comment_votes (comment_id, username, up, down) VALUES (?, ?, ?, ?)"
+        cursor.execute(query, (comment_id, username, up, down))
+        db.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+
+
+def get_comment_votes(db, comment_id):
+    """
+    Returns sum of votes for specific comment
+    """
+    cursor = db.cursor()
+    query = "SELECT SUM(up) - SUM(down) FROM comment_votes WHERE comment_id = ?"
+    cursor.execute(query, (comment_id,))
+    row = cursor.fetchone()
+    # If comment has no votes, return 0
+    if row is None:
+        return 0
+    return row[0]
+
 # Keyword table methods
 
 def new_keyword(db, keyword):

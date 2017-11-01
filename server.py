@@ -154,6 +154,37 @@ def do_submit_comment(post_id):
         new_comment(db, content, user, post_id, parent_id)
     redirect('/post/' + str(post_id))
 
+@get('/post/<post_id:int>/comment/<comment_id:int>/vote_up')
+@login_required
+def vote_comment_up(post_id, comment_id):
+    do_vote_comment_up(post_id, comment_id)
+    redirect('/post/' + str(post_id))
+
+
+@get('/post/<post_id:int>/comment/<comment_id:int>/vote_down')
+@login_required
+def vote_comment_down(post_id, comment_id):
+    do_vote_comment_down(post_id, comment_id)
+    redirect('/post/' + str(post_id))
+
+
+@post('/post/<post_id:int>/comment/<comment_id:int>/vote_up')
+@login_required
+def do_vote_comment_up(post_id, comment_id):
+    user = get_session(db)
+    vote_comment(db, comment_id, user, 1, 0)
+    total_votes = get_comment_votes(db, comment_id)
+    return str(total_votes)
+
+
+@post('/post/<post_id:int>/comment/<comment_id:int>/vote_down')
+@login_required
+def do_vote_comment_down(post_id, comment_id):
+    user = get_session(db)
+    vote_comment(db, comment_id, user, 0, 1)
+    total_votes = get_comment_votes(db, comment_id)
+    return str(total_votes)
+
 @error(404)
 def error404(error):
     user = get_session(db)
