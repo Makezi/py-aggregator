@@ -102,6 +102,43 @@ def do_submit_post():
         redirect('/post/' + str(post_id))
     return template('submit_post', errors=errors, form=form, user=user)
 
+@get('/submit_image')
+@login_required
+def submit_image():
+    user = get_session(db)
+    return template('submit_image', errors=None, form=None, user=user)
+
+
+@post('/submit_image')
+@login_required
+def do_submit_image():
+    user = get_session(db)
+    title = request.forms.get('title')
+    image = request.files.get('upload_image')
+    image_form = ImageForm(title, image)
+    form = image_form.get_form_name()
+    errors = image_form.validate()
+    if not errors:
+        save_image(image)
+        post_id = new_image_post(db, title, image.filename, user)
+        # get keywords, insert into tables
+        keywords = format_keywords(request.forms.get('keywords'))
+        # Add keywords to table
+        for keyword in keywords:
+            add_keyword_to_post(db, post_id, keyword)
+        redirect('/post/' + str(post_id))
+    return template('submit_image', errors=errors, form=form, user=user)
+
+
+def save_image(image):
+    """
+    Saves image on disk. If directory doesn't exist, a new one is created
+    """
+    path = os.getcwd() + "/static/img/"
+    if not os.path.exists(path):
+        os.makedirs(path)
+    image.save(path, True)
+
 @get('/post/<post_id:int>')
 def view_post(post_id):
     user = get_session(db)

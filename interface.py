@@ -139,6 +139,18 @@ def new_post(db, title, url, content, username):
     db.commit()
     return cursor.lastrowid
 
+def new_image_post(db, title, image, username):
+    """
+    Adds new image post to the database, with image filename being stored.
+    Date of the post will be the current date and time.
+    Returns newly isnerted row id
+    """
+    cursor = db.cursor()
+    query = "INSERT INTO posts (title, image, username, timestamp) VALUES (?, ?, ?, ?)"
+    cursor.execute(query, (title, image, username, datetime.now()))
+    db.commit()
+    return cursor.lastrowid
+
 def get_all_posts(db, user, keyword=''):
     """
     Return a list of posts, including user avatars, comment count,

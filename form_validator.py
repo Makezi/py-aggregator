@@ -111,6 +111,28 @@ class PostForm(BaseForm):
             self._errors.append('Invalid URL')
         return self._errors
 
+class ImageForm(BaseForm):
+
+    def __init__(self, title, image):
+        BaseForm.__init__(self)
+        self._title = title
+        self._image = image
+        self._form_name = "ImagePost"
+
+    def validate(self):
+        title_min = 1
+        title_max = 255
+        if not self._title:
+            self._errors.append('Title field is required')
+        if not self._image:
+            self._errors.append('Image file required')
+        if not between_length(self._title, title_min, title_max):
+            self._errors.append('Title must be between %s and %s characters long' % (title_min, title_max))
+        if not valid_image(self._image):
+            self._errors.append('Invalid image extension')
+        return self._errors
+
+
 def acceptable_chars(data, regex):
     """
     Validates the data against a provided regular expression
@@ -130,5 +152,17 @@ def valid_url(data):
     Validates the data against valid URL strings
     """
     if re.match('(?:https?://|www.)[^"\' ]+', data):
+        return True
+    return False
+
+def valid_image(data):
+    """
+    Validates the data against valid image file extensions
+    """
+    if data is None:
+        return False
+    filename = data.filename
+    name, extension = os.path.splitext(filename)
+    if extension in ('.png', '.jpg', '.jpeg'):
         return True
     return False
