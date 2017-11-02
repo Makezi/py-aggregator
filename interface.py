@@ -230,6 +230,18 @@ def get_post(db, post_id, user):
         return post
     return None
 
+def delete_post(db, post_id, user):
+    """
+    Delete a post from the database.
+    Only the owner of the post can delete their posts
+    """
+    cursor = db.cursor()
+    query = "DELETE FROM posts WHERE id = ? and username = ?"
+    cursor.execute(query, (post_id, user))
+    if cursor.rowcount == 1:
+        return True
+    return False
+
 # Comments table methods
 
 def new_comment(db, content, username, post_id, parent_id=None):

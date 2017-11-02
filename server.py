@@ -148,6 +148,15 @@ def view_post(post_id):
         redirect('/404')
     return template('post', post=post, comments=comments, user=user)
 
+@get('/post/<post_id:int>/delete')
+@login_required
+def do_delete_post(post_id):
+    user = get_session(db)
+    if delete_post(db, post_id, user):
+        redirect('/')
+    else:
+        redirect('/post/' + str(post_id))
+
 @get('/post/<post_id:int>/vote_up')
 @login_required
 def vote_post_up(post_id):
