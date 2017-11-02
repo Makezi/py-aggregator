@@ -19,6 +19,21 @@ def login():
         redirect('/')
     return template('login', errors=None, form=None, user=None)
 
+@post('/login')
+def do_login():
+    username = request.forms.get('username')
+    password = request.forms.get('password')
+    login_form = LoginForm(username, password)
+    form = login_form.get_form_name()
+    errors = login_form.validate()
+    if not errors:
+        if check_login(db, username, password):
+            new_session(db, username)
+            redirect('/')
+        else:
+            errors.append('Username or password is incorrect')
+    return template('login', errors=errors, form=form, user=None)
+
 def login_required(func):
     """ 
     Decorator which checks if the user is logged in before 
@@ -38,21 +53,6 @@ def logout():
         redirect('/')
     else:
         redirect('/login')
-
-@post('/login')
-def do_login():
-    username = request.forms.get('username')
-    password = request.forms.get('password')
-    login_form = LoginForm(username, password)
-    form = login_form.get_form_name()
-    errors = login_form.validate()
-    if not errors:
-        if check_login(db, username, password):
-            new_session(db, username)
-            redirect('/')
-        else:
-            errors.append('Username or password is incorrect')
-    return template('login', errors=errors, form=form, user=None)
 
 @get('/register')
 def register():
@@ -156,6 +156,15 @@ def do_delete_post(post_id):
         redirect('/')
     else:
         redirect('/post/' + str(post_id))
+
+@get('/search')
+def do_search_posts():
+    keyword = request.query.getone('post_search')
+    if keyword:
+        keyword = sanitize_html(keyword)
+    user = get_session(db)
+    posts = get_all_posts(db, user, keyword)
+    return template('index', posts=posts, user=user)
 
 @get('/post/<post_id:int>/vote_up')
 @login_required
