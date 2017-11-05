@@ -1,0 +1,552 @@
+body {
+  font-size: 100%;
+  font-family: 'Trebuchet MS', sans-serif;
+  background-color: white;
+  margin: 0px;
+  padding: 0px;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.footer {
+  clear: both;
+  position: relative;
+  z-index: 10;
+  height: 3em;
+  margin-top: 5em;
+  text-align: center;
+  color: darkgray;
+}
+
+.wrap {
+  max-width: 960px;
+  float: none;
+  margin: 0 auto;
+  padding: 0px;
+}
+
+.nav {
+  background-color: slategrey;
+  height: 50px;
+}
+
+.nav h1 {
+  float: left;
+  margin-top: 6px;
+  margin-left: 15px;
+  font-size: 32px;
+}
+
+.nav a {
+  color: aliceblue;
+}
+
+.nav a:link {
+  text-decoration: none;
+}
+
+.nav a:hover {
+  color: lightblue;
+  text-decoration: none;
+}
+
+.nav a:visited {
+  text-decoration: none;
+}
+
+.nav a:active {
+  text-decoration: none;
+}
+
+.nav_login {
+  float: right;
+  margin-right: 15px;
+}
+
+.nav_login li {
+  display: inline;
+  padding: 5px;
+  color: lightblue;
+}
+
+.form_errors {
+  margin-top: 25px;
+  margin-left: 20px;
+  color: darkred;
+}
+
+.register,
+.login,
+.submit_post {
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+.register legend,
+.login legend,
+.submit_post legend {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.register p,
+.login p,
+.submit_post p {
+  margin: 20px 0 0;
+}
+
+.register p:first-child,
+.login p:first-child,
+.submit_post p:first-child {
+  margin-top: 0;
+}
+
+.register input[type='text'],
+.register input[type='password'],
+.login input[type='text'],
+.login input[type='password'],
+.search_box input {
+  width: 300px;
+}
+
+.submit_post input[type='text'] {
+  width: 500px;
+}
+
+.submit_post textarea {
+  font-size: 16px;
+  width: 500px;
+  max-width: 870px;
+  height: 125px;
+}
+
+.keyword {
+  color: white;
+  background: darkgray;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.keyword_rules {
+  background-color: aliceblue;
+  max-width: 600px;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.post_keywords {
+  margin-top: 15px;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+input {
+  font-size: 14px;
+}
+
+input[type='text'],
+input[type='password'] {
+  padding: 0 10px;
+  width: 200px;
+  height: 34px;
+  color: #404040;
+  background: white;
+  border: 1px solid;
+  border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+  border-radius: 2px;
+  -moz-outline-radius: 3px;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+input[type='search'] {
+  padding: 0 10px;
+  width: 350px;
+  height: 34px;
+  color: #404040;
+  background: white;
+  border: 1px solid;
+  border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+  border-radius: 2px;
+  -moz-outline-radius: 3px;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+input[type='text']:focus,
+input[type='password']:focus {
+  border-color: #7dc9e2;
+  outline-color: #dceefc;
+  outline-offset: 0;
+}
+
+.login_container {
+  margin-top: 30px;
+}
+
+.index_container {
+  margin-top: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.submit_post {
+  margin-top: 30px;
+}
+
+.posts_container {
+  float: left;
+  overflow: hidden;
+  margin: 15px auto;
+}
+
+.posts_container table {
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+
+.vote_cell {
+  min-width: 40px;
+  vertical-align: top;
+}
+
+.vote {
+  text-align: center;
+}
+
+.vote_value {
+  font-size: 20px;
+  color: darkgray;
+}
+
+.vote_up_button,
+.vote_down_button {
+  cursor: pointer;
+  border: none;
+  background-color: Transparent;
+  font-size: 30px;
+  color: darkgray;
+  outline: none;
+  display: block;
+}
+
+.vote_up_button:hover {
+  color: slategrey;
+}
+
+.vote_down_button:hover {
+  color: darkred;
+}
+
+.post_cell,
+.comment_cell {
+  padding: 10px;
+  background-color: whitesmoke;
+  width: 860px;
+}
+
+.post_image_thumbnail img {
+  border: 1px solid black;
+  width: 100px;
+  height: 100px;
+}
+
+.post_image img {
+  max-width: 800px;
+  height: auto;
+  border: 1px solid black;
+  margin-bottom: 10px;
+}
+
+.user_post {
+  font-size: 14px;
+  color: darkgray;
+}
+
+.user_post strong {
+  font-size: 16px;
+  margin-right: 5px;
+  color: slategrey;
+  margin-left: 5px;
+}
+
+.user_post img {
+  border: 1px solid black;
+}
+
+.post_title_link {
+  margin-top: 5px;
+}
+
+.post_title_link a {
+  font-size: 22px;
+  color: slategrey;
+}
+
+.post_title_link a:link {
+  text-decoration: none;
+}
+
+.post_title_link a:hover {
+  text-decoration: none;
+  color: lightblue;
+}
+
+.domain {
+  font-size: 12px;
+  /*float: right;*/
+  color: darkgray;
+}
+
+.post_summary a {
+  font-size: 14px;
+  color: darkgray;
+  text-decoration: none;
+}
+
+.post_summary a:hover {
+  text-decoration: underline;
+}
+
+.submit_post_container {
+  float: right;
+  /*margin-top: 15px;*/
+  display: block;
+  margin-right: 10px;
+}
+
+.submit_post_container a {
+  margin: 5px;
+  text-decoration: none;
+}
+
+.post_container {
+  margin: 30px;
+}
+
+.post_container h2 {
+  margin-top: 10px;
+}
+
+.post_container p {
+  margin-top: -10px;
+}
+
+.post_container h4 {
+  margin-top: 20px;
+  padding: 0px;
+}
+
+.post_container hr {
+  border: 0;
+  border-top: 1px solid darkgray;
+  opacity: 0.25;
+  margin-top: -10px;
+}
+
+.comment {
+  margin-bottom: 6px;
+}
+
+.comment_body {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.comment li {
+  list-style-type: none;
+}
+
+.post_comment li {
+  list-style-type: none;
+}
+
+.comment textarea {
+  font-size: 16px;
+}
+
+.comment_box {
+  width: 500px;
+  max-width: 870px;
+  height: 125px;
+}
+
+.comment_reply {
+  text-decoration: none;
+  font-size: 14px;
+  color: darkgray;
+}
+
+.comment_reply:hover {
+  text-decoration: underline;
+}
+
+.comment_reply_form {
+  margin-top: 10px;
+}
+
+.submit_post_button:active {
+  position: relative;
+  top: 1px;
+}
+
+.delete_button {
+  margin-top: 10px;
+  float: right;
+}
+
+.submit_button,
+.delete_button {
+  -moz-box-shadow: inset 0px 1px 0px 0px slategrey;
+  -webkit-box-shadow: inset 0px 1px 0px 0px slategrey;
+  box-shadow: inset 0px 1px 0px 0px slategrey;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.05, slategrey),
+    color-stop(1, slategrey)
+  );
+  background: -moz-linear-gradient(top, slategrey 5%, slategrey 100%);
+  background: -webkit-linear-gradient(top, slategrey 5%, slategrey 100%);
+  background: -o-linear-gradient(top, slategrey 5%, slategrey 100%);
+  background: -ms-linear-gradient(top, slategrey 5%, slategrey 100%);
+  background: linear-gradient(to bottom, slategrey 5%, slategrey 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc477', endColorstr='#fb9e25',GradientType=0);
+  background-color: slategrey;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid white;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 6px 24px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px slategrey;
+}
+
+.submit_button:hover,
+.delete_button:hover {
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.05, lightblue),
+    color-stop(1, lightblue)
+  );
+  background: -moz-linear-gradient(top, lightblue 5%, lightblue 100%);
+  background: -webkit-linear-gradient(top, lightblue 5%, lightblue 100%);
+  background: -o-linear-gradient(top, lightblue 5%, lightblue 100%);
+  background: -ms-linear-gradient(top, lightblue 5%, lightblue 100%);
+  background: linear-gradient(to bottom, lightblue 5%, lightblue 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=lightblue, endColorstr='#ffc477',GradientType=0);
+  background-color: lightblue;
+}
+
+.submit_button:active,
+.delete_button:active {
+  position: relative;
+  top: 1px;
+}
+
+.submit_button:disabled {
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.05, darkgray),
+    color-stop(1, darkgray)
+  );
+  background: -moz-linear-gradient(top, darkgray 5%, darkgray 100%);
+  background: -webkit-linear-gradient(top, darkgray 5%, darkgray 100%);
+  background: -o-linear-gradient(top, darkgray 5%, darkgray 100%);
+  background: -ms-linear-gradient(top, darkgray 5%, darkgray 100%);
+  background: linear-gradient(to bottom, darkgray 5%, darkgray 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=darkgray, endColorstr='#ffc477',GradientType=0);
+  background-color: darkgray;
+}
+
+.cancel_button {
+  -moz-box-shadow: inset 0px 1px 0px 0px slategrey;
+  -webkit-box-shadow: inset 0px 1px 0px 0px slategrey;
+  box-shadow: inset 0px 1px 0px 0px slategrey;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.05, slategrey),
+    color-stop(1, slategrey)
+  );
+  background: -moz-linear-gradient(top, slategrey 5%, slategrey 100%);
+  background: -webkit-linear-gradient(top, slategrey 5%, slategrey 100%);
+  background: -o-linear-gradient(top, slategrey 5%, slategrey 100%);
+  background: -ms-linear-gradient(top, slategrey 5%, slategrey 100%);
+  background: linear-gradient(to bottom, slategrey 5%, slategrey 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc477', endColorstr='#fb9e25',GradientType=0);
+  background-color: slategrey;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid white;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 6px 24px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px slategrey;
+}
+
+.cancel_button:hover {
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.05, lightblue),
+    color-stop(1, lightblue)
+  );
+  background: -moz-linear-gradient(top, lightblue 5%, lightblue 100%);
+  background: -webkit-linear-gradient(top, lightblue 5%, lightblue 100%);
+  background: -o-linear-gradient(top, lightblue 5%, lightblue 100%);
+  background: -ms-linear-gradient(top, lightblue 5%, lightblue 100%);
+  background: linear-gradient(to bottom, lightblue 5%, lightblue 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=lightblue, endColorstr='#ffc477',GradientType=0);
+  background-color: lightblue;
+}
+
+.cancel_button:active {
+  position: relative;
+  top: 1px;
+}
+
+.page404 {
+  text-align: center;
+}
+
+.page404 h1 {
+  font-size: 200px;
+}
+
+.search_box {
+  margin-left: 10px;
+  /*margin-top: 100px;*/
+  /*margin-bottom:1000px;*/
+}
+
+.search_box img {
+  width: 20px;
+}
+
+.search_box input {
+  float: left;
+}
+
+.search_box button {
+  float: left;
+  margin-left: 10px;
+}
