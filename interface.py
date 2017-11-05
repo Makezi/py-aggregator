@@ -463,20 +463,20 @@ def insert_sample_data(db):
               "skyline.jpg",
               None,
               'Bruce',
-              '2015-01-15 01:45:06'),
+              '2017-01-15 01:45:06'),
              ('KUNG FURY',
               'https://www.youtube.com/watch?v=bS5P_LAqiVg',
               None,
               '10/10',
               'Wally',
-              '2015-04-21 00:54:53'),
+              '2017-04-21 00:54:53'),
              ("What is the thin buzzing sound that I hear when it's really quiet?",
 
               None,
               None,
               None,
               'Jim',
-              '2015-05-3 22:24:14')]
+              '2017-05-3 22:24:14')]
     for title, url, image, content, username, timestamp in posts:
         query = "INSERT INTO posts (title, url, image, content, username, timestamp) VALUES (?, ?, ?, ?, ?, ?)"
         cursor.execute(query, (title, url, image, content, username, timestamp))
@@ -485,39 +485,39 @@ def insert_sample_data(db):
                  'Bruce',
                  2,
                  None,
-                 '2015-04-21 00:55:27'),
+                 '2017-04-21 00:55:27'),
                 ('Pretty good',
                  'Jim',
                  2,
                  None,
-                 '2015-04-21 00:57:12'),
+                 '2017-04-21 00:57:12'),
                 ('Yep, 10/10',
                  'Wally',
                  2,
                  1,
-                 '2015-04-21 00:58:05'),
+                 '2017-04-21 00:58:05'),
                 ('Agreed.',
                  'Bruce',
                  2,
                  3,
-                 '2015-04-21 00:59:05'),
+                 '2017-04-21 00:59:05'),
                 ("Very pretty!",
                  'Jim',
                  1,
                  None,
-                 '2015-01-15 01:59:06'),
+                 '2017-01-15 01:59:06'),
                 ("I believe it is called 'Urban Static'. You will notice it goes away during heavy snow storms since "
                  "the snow starts adsorbing distant sounds.",
                  "Bruce",
                  3,
                  None,
-                 "2015-05-3 22:26:24"),
+                 "2017-05-3 22:26:24"),
                 ("I love when it snows a lot because of how quiet the world becomes, it goes away for me during "
                  "heavy snow.",
                  "Wally",
                  3,
                  6,
-                 "2015-05-3 22:27:34")]
+                 "2017-05-3 22:27:34")]
     for content, username, post_id, parent_id, timestamp in comments:
         query = "INSERT INTO comments (content, username, post_id, parent_id, timestamp) VALUES (?, ?, ?, ?, ?)"
         cursor.execute(query, (content, username, post_id, parent_id, timestamp))
